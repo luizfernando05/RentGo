@@ -1,0 +1,1367 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Compas Car API",
+    "description": "Esta API tem o objetivo de gerenciar recursos para um sistema de gerenciamento de concessionária de automóveis.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8686/api/v1",
+      "description": "API de teste"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "description": "Essa rota será responsável por fazer login de um usuário",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              },
+              "examples": {
+                "login": {
+                  "value": {
+                    "email": "admin@admin.com",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRetorno"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Lista usuários",
+        "description": "Lista usuários. Pode filtrar, ordenar por nome e email em ordem crescente ou decrescente e também listar usuários deletados",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do usuário para busca",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email do usuário para busca",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "description": "Filtro para listar usuários excluídos",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Campo para ordenar a lista",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["full_name", "createdAt", "deletedAt"]
+            }
+          },
+          {
+            "name": "orderDirection",
+            "in": "query",
+            "description": "Direção da ordenação",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ASC", "DESC"]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de itens por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar usuário",
+        "description": "Cria um novo usuário no sistema.",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              },
+              "examples": {
+                "newUser": {
+                  "value": {
+                    "full_name": "John Doe",
+                    "email": "johndoe@example.com",
+                    "password": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Selecionar usuário por ID",
+        "description": "Recupera as informações de um usuário específico pelo ID.",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar usuário",
+        "description": "Atualiza as informações de um usuário específico.",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              },
+              "examples": {
+                "userUpdate": {
+                  "value": {
+                    "full_name": "John Doe",
+                    "email": "johndoe@example.com",
+                    "password": "currentPassword",
+                    "newPassword": "newPassword123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar usuário",
+        "description": "Deleta um usuário específico pelo ID.",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário deletado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário deletado com sucesso."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "400": {
+            "description": "Um erro inesperado aconteceu."
+          }
+        }
+      }
+    },
+    "/client": {
+      "post": {
+        "summary": "Cria um novo cliente",
+        "description": "Cria um cliente com os dados fornecidos no corpo da requisição.",
+        "tags": ["Client"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cliente criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação de CPF ou email"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os clientes",
+        "description": "Retorna uma lista de clientes, com filtros e paginação opcionais.",
+        "tags": ["Client"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filtrar clientes pelo nome",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cpf",
+            "in": "query",
+            "description": "Filtrar clientes pelo CPF",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Filtrar clientes pelo email",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "description": "Filtro para listar usuários excluídos",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Campo para ordenar a lista",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["full_name", "createdAt", "deletedAt"]
+            }
+          },
+          {
+            "name": "orderDirection",
+            "in": "query",
+            "description": "Direção da ordenação",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ASC", "DESC"]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de itens por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/client/{id}": {
+      "get": {
+        "summary": "Consulta cliente por ID",
+        "description": "Retorna os dados de um cliente específico pelo ID.",
+        "tags": ["Client"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do cliente"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualiza cliente",
+        "description": "Atualiza os dados de um cliente específico pelo ID.",
+        "tags": ["Client"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do cliente"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cliente atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação de CPF ou email"
+          },
+          "404": {
+            "description": "Cliente não encontrado ou já excluído"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui cliente",
+        "description": "Exclui um cliente específico pelo ID.",
+        "tags": ["Client"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do cliente"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente excluído com sucesso"
+          },
+          "404": {
+            "description": "Cliente não encontrado ou já excluído"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/cars": {
+      "get": {
+        "summary": "Listar carros",
+        "description": "Retorna uma lista de carros com suporte a filtros e paginação.",
+        "tags": ["Cars"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número da página para paginação"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Limite de resultados por página"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Status do carro"
+          },
+          {
+            "in": "query",
+            "name": "endPlate",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Final da placa do carro"
+          },
+          {
+            "in": "query",
+            "name": "brand",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Marca do carro"
+          },
+          {
+            "in": "query",
+            "name": "model",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Modelo do carro"
+          },
+          {
+            "in": "query",
+            "name": "km",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Quilometragem do carro"
+          },
+          {
+            "in": "query",
+            "name": "fromYear",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ano mínimo de fabricação do carro"
+          },
+          {
+            "in": "query",
+            "name": "untilYear",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ano máximo de fabricação do carro"
+          },
+          {
+            "in": "query",
+            "name": "minPrice",
+            "schema": {
+              "type": "number"
+            },
+            "description": "Preço mínimo do carro"
+          },
+          {
+            "in": "query",
+            "name": "maxPrice",
+            "schema": {
+              "type": "number"
+            },
+            "description": "Preço máximo do carro"
+          },
+          {
+            "in": "query",
+            "name": "orderBy",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Campo para ordenar a listagem"
+          },
+          {
+            "in": "query",
+            "name": "orderDirection",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "Direção da ordenação (ascendente ou descendente)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de carros",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Car"
+                      }
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Nenhum carro encontrado"
+          },
+          "400": {
+            "description": "Erro nos parâmetros de entrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar carro",
+        "description": "Cria um novo carro com as informações fornecidas.",
+        "tags": ["Cars"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Carro criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "summary": "Visualizar carro",
+        "description": "Retorna os detalhes de um carro específico.",
+        "tags": ["Cars"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do carro a ser visualizado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do carro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID inválido"
+          },
+          "404": {
+            "description": "Carro não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar carro",
+        "description": "Atualiza as informações de um carro específico.",
+        "tags": ["Cars"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do carro a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Carro atualizado com sucesso"
+          },
+          "400": {
+            "description": "ID ou dados inválidos"
+          },
+          "404": {
+            "description": "Carro não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir carro",
+        "description": "Exclui um carro específico com base no ID.",
+        "tags": ["Cars"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do carro a ser excluído"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Carro excluído com sucesso"
+          },
+          "400": {
+            "description": "ID inválido"
+          },
+          "404": {
+            "description": "Carro não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Cria um novo pedido",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Orders"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "description": "ID do cliente."
+                  },
+                  "carId": {
+                    "type": "string",
+                    "description": "ID do carro."
+                  }
+                },
+                "required": ["clientId", "carId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pedido criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados enviados."
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os pedidos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra pedidos por status."
+          },
+          {
+            "name": "clientCpf",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra pedidos pelo CPF do cliente."
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data inicial para o filtro."
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data final para o filtro."
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["ASC", "DESC"]
+            },
+            "description": "Ordem de classificação."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número da página."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número de itens por página."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados de filtro."
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Obtém um pedido pelo ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pedido."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do pedido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido não encontrado ou erro no ID."
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um pedido pelo ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pedido."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "initialDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data inicial do pedido."
+                  },
+                  "finalDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data final do pedido."
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP do pedido no formato 00000-000 ou 00000000."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["Aprovado", "Cancelado"],
+                    "description": "Status do pedido."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pedido atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados enviados."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um pedido pelo ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do pedido."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido excluído com sucesso."
+          },
+          "400": {
+            "description": "Erro ao tentar excluir o pedido."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRetorno": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "full_name": { "type": "string", "example": "John Doe" },
+          "email": { "type": "string", "example": "johndoe@example.com" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "UserListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "total": { "type": "integer" },
+              "page": { "type": "integer" },
+              "pageSize": { "type": "integer" },
+              "totalPages": { "type": "integer" }
+            }
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "full_name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "full_name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "newPassword": { "type": "string" }
+        }
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "birthday": { "type": "string", "format": "date" },
+          "cpf": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" }
+        }
+      },
+      "CreateClientDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "birthday": { "type": "string", "format": "date" },
+          "cpf": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" }
+        },
+        "required": ["name", "birthday", "cpf", "email", "phone"]
+      },
+      "UpdateClientDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "birthday": { "type": "string", "format": "date" },
+          "cpf": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do carro"
+          },
+          "plate": {
+            "type": "string",
+            "description": "Placa do carro"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Marca do carro"
+          },
+          "model": {
+            "type": "string",
+            "description": "Modelo do carro"
+          },
+          "km": {
+            "type": "integer",
+            "description": "Quilometragem do carro"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Ano de fabricação do carro"
+          },
+          "price": {
+            "type": "number",
+            "description": "Preço do carro"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status do carro"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Itens opcionais do carro"
+          }
+        }
+      },
+      "CarInput": {
+        "type": "object",
+        "properties": {
+          "plate": {
+            "type": "string",
+            "description": "Placa do carro"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Marca do carro"
+          },
+          "model": {
+            "type": "string",
+            "description": "Modelo do carro"
+          },
+          "km": {
+            "type": "integer",
+            "description": "Quilometragem do carro"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Ano de fabricação do carro"
+          },
+          "price": {
+            "type": "number",
+            "description": "Preço do carro"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status do carro"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Itens opcionais do carro"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do pedido."
+          },
+          "clientId": {
+            "type": "string",
+            "description": "ID do cliente associado ao pedido."
+          },
+          "carId": {
+            "type": "string",
+            "description": "ID do carro associado ao pedido."
+          },
+          "initialDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de início do pedido."
+          },
+          "finalDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de término do pedido."
+          },
+          "cep": {
+            "type": "string",
+            "description": "CEP associado ao pedido."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Aprovado", "Cancelado"],
+            "description": "Status do pedido."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

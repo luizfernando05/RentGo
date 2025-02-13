@@ -1,0 +1,896 @@
+{
+	"info": {
+		"_postman_id": "947850d3-3b29-4e63-8735-23cdcb7f6d40",
+		"name": "API-CompassCar desafio 3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32462837"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n      \"full_name\": \"João Silva\",\r\n      \"email\": \"joao02@example.com\",\r\n      \"password\": \"senha123\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "full_name",
+									"disabled": true
+								},
+								{
+									"key": "orderBy",
+									"value": "createdAt",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "usuario",
+									"disabled": true
+								},
+								{
+									"key": "isDeleted",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "orderDirection",
+									"value": "DESC",
+									"disabled": true
+								},
+								{
+									"key": "orderBy",
+									"value": "deletedAt",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"DB Louis\",\r\n    \"email\": \"louis4445@gmail.com\",\r\n    \"password\": \"senha123\",\r\n    \"newPassword\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/6021b446-7ecb-4890-a4fc-e9e74564b408",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"6021b446-7ecb-4890-a4fc-e9e74564b408"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user/6021b446-7ecb-4890-a4fc-e9e74564b408",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"6021b446-7ecb-4890-a4fc-e9e74564b408"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar user por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user/6021b446-7ecb-4890-a4fc-e9e74564b408",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"6021b446-7ecb-4890-a4fc-e9e74564b408"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "client",
+			"item": [
+				{
+					"name": "create client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n      \"name\": \"Vincenzo Cassano\",\r\n      \"birthday\": \"1990-08-15\",\r\n      \"email\": \"vincenzo@example.com\",\r\n      \"phone\": \"123456789\",\r\n      \"cpf\": \"955.498.581-93\"\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/client",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/client",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "cpf",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "isDeleted",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "orderDirection",
+									"value": "ASC",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"phone\": \"987654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/client/9cd06bb6-d717-4517-92e2-fb649c6800c0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								"9cd06bb6-d717-4517-92e2-fb649c6800c0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/client/9cd06bb6-d717-4517-92e2-fb649c6800c0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								"9cd06bb6-d717-4517-92e2-fb649c6800c0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar client por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/client/9cd06bb6-d717-4517-92e2-fb649c6800c0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								"9cd06bb6-d717-4517-92e2-fb649c6800c0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "car",
+			"item": [
+				{
+					"name": "create car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"plate\": \"ABC1236\",\r\n   \"brand\": \"Tesla\",\r\n   \"model\": \"Model S\",\r\n   \"km\": 20000,\r\n   \"year\": 2021,\r\n   \"price\": 800000,\r\n   \"status\": \"ativo\",\r\n   \"items\": [ \"autopilot\", \"câmbio automático\", \"câmera de ré\", \"ar-condicionado\", \"teste1\", \"teste2\" ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/car",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/car",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "price",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "endPlate",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "brand",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "model",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "items",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "km",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "fromYear",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "untilYear",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "orderDirection",
+									"value": "ASC",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"price\": 24000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/car/15f8481b-fbcd-4b7e-867e-2cc8769c9fe9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"car",
+								"15f8481b-fbcd-4b7e-867e-2cc8769c9fe9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/car/15f8481b-fbcd-4b7e-867e-2cc8769c9fe9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"car",
+								"15f8481b-fbcd-4b7e-867e-2cc8769c9fe9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar car por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/car/15f8481b-fbcd-4b7e-867e-2cc8769c9fe9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"car",
+								"15f8481b-fbcd-4b7e-867e-2cc8769c9fe9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"clientId\": \"ca0a5c41-9f10-4d62-9167-6da8651a3ea8\",\r\n      \"carId\": \"b9e1cffc-0848-48fb-a306-e8ffb9d534d5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order?status=Aberto",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "Aberto"
+								},
+								{
+									"key": "clientCpf",
+									"value": "12020936046",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "2024-11-28T13:51:31.000Z",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "2024-11-28T13:51:31.000Z",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "DESC",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cep\": \"59650-000\",\r\n    \"status\": \"Aprovado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order/6a3f3c9e-0c2d-446c-a857-b97ad7677240",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"6a3f3c9e-0c2d-446c-a857-b97ad7677240"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order/003631a9-e0e5-48a7-8605-c3c17c321046",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"003631a9-e0e5-48a7-8605-c3c17c321046"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar order por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order/6a3f3c9e-0c2d-446c-a857-b97ad7677240",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"6a3f3c9e-0c2d-446c-a857-b97ad7677240"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
