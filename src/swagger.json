@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Compas Car API",
+    "title": "RentGo",
     "description": "Esta API tem o objetivo de gerenciar recursos para um sistema de gerenciamento de concessionária de automóveis.",
     "version": "1.0.0"
   },
